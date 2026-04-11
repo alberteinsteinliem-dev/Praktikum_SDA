@@ -15,7 +15,7 @@ Hewan riwayat[MAX];
 int top = -1;
 
 Hewan antrian[MAX];
-int dpn = -1, blkng = -1;
+int front = -1, rear = -1;
 
 void swap(Hewan *a, Hewan *b) {
     Hewan temp = *a;
@@ -45,11 +45,11 @@ void tampilData(Hewan *arr) {
 }
 
 bool isQueueFull() {
-    return blkng == MAX - 1;
+    return rear == MAX - 1;
 }
 
 bool isQueueEmpty() {
-    return dpn == -1 || dpn > blkng;
+    return front == -1 || front > rear;
 }
 
 void enqueue(Hewan data) {
@@ -58,10 +58,10 @@ void enqueue(Hewan data) {
         return;
     }
 
-    if(dpn == -1) dpn = 0;
+    if(front == -1) front = 0;
 
-    blkng++;
-    antrian[blkng] = data;
+    rear++;
+    antrian[rear] = data;
 
     cout << data.nama << " masuk antrian.\n";
 }
@@ -73,11 +73,11 @@ Hewan dequeue() {
         return kosong;
     }
 
-    Hewan temp = antrian[dpn];
-    dpn++;
+    Hewan temp = antrian[front];
+    front++;
 
     if(isQueueEmpty()) {
-        dpn = blkng = -1;
+        front = rear = -1;
     }
 
     return temp;
@@ -90,7 +90,7 @@ void tampilAntrian() {
     }
 
     cout << "\n=== Antrian Pasien ===\n";
-    for(int i = dpn; i <= blkng; i++) {
+    for(int i = front; i <= rear; i++) {
         cout << "ID: " << (antrian + i)->id
              << " | Nama: " << (antrian + i)->nama << endl;
     }
@@ -139,8 +139,8 @@ void peek() {
     cout << "\n=== PEEK ===\n";
 
     if(!isQueueEmpty()) {
-        cout << "Antrian dpn: "
-             << antrian[dpn].nama << endl;
+        cout << "Antrian front: "
+             << antrian[front].nama << endl;
     } else {
         cout << "Antrian kosong\n";
     }
